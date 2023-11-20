@@ -15,6 +15,7 @@ type server struct {
 type Server interface {
 	Start() error
 	HandlePing(http.ResponseWriter, *http.Request)
+	HandleIP(http.ResponseWriter, *http.Request)
 }
 
 func NewServer(addr string) Server {
@@ -29,7 +30,9 @@ func (s *server) Start() error {
 func registerRoutes(s *server) http.Handler {
 
 	s.mux.Use(middleware.Recoverer)
+	s.mux.Use(addIPToRequest)
 
 	s.mux.Get("/ping", s.HandlePing)
+	s.mux.Get("/ip", s.HandleIP)
 	return s.mux
 }
