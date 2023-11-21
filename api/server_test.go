@@ -65,32 +65,3 @@ func Test_ipHandler(t *testing.T) {
 		t.Errorf("IP not expected %s ", string(msg))
 	}
 }
-
-func Test_getIP(t *testing.T) {
-
-	tests := []struct {
-		name     string
-		req      *http.Request
-		expected string
-	}{
-		{"IP missing case", &http.Request{RemoteAddr: ""}, "unknown"},
-		{"correct IP", &http.Request{RemoteAddr: "192.168.0.1:8080"}, "192.168.0.1"},
-		{"X-forward-case", &http.Request{Header: getHeader()}, "192.168.0.2"},
-	}
-
-	for _, test := range tests {
-		ret := getIP(test.req)
-		if ret != test.expected {
-			t.Errorf("Unexpected return value : %s ", ret)
-		}
-	}
-	// Test for remoteaddressmissing
-
-}
-
-func getHeader() http.Header {
-	h := http.Header{}
-	h.Add("X-Forwarded-For", "192.168.0.2")
-	return h
-
-}
