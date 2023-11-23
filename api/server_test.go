@@ -54,7 +54,7 @@ func Test_ipHandler(t *testing.T) {
 	resp := httptest.NewRecorder()
 
 	//Initialize the server
-	s := NewServer("")
+	s := NewServer("", nil)
 	s.HandleIP(resp, req)
 
 	//Read the response body
